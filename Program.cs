@@ -1,17 +1,30 @@
+using Application.CommandHandlers;
+using Domain.Interface;
+using Infrastructure.Services;
+
 namespace SubscriptionsBot
 {
     public class Program
     {
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
+        public static async Task Main(string[] args)
+        {
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
+            var host = Host.CreateDefaultBuilder(args).ConfigureServices((context, services) =>
             {
-                webBuilder.UseStartup<Startup>();
-            });
+                services.AddSingleton<ICommandHandler, PingCommandHandler>();
+                services.AddSingleton<ITelegramHostedBotService, TelegramHostedBotService>();
+                var startup = new Startup();
+
+                startup.ConfigureServices(services);
+            }).Build();
+
+            var bot = host.Services.GetRequiredService<ITelegramHostedBotService>();
+
+            await bot.RunAsync();
+
+            await host.RunAsync();
+
+        }
+
     }
 }
