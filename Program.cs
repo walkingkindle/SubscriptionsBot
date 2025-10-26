@@ -12,6 +12,7 @@ namespace SubscriptionsBot
             var host = Host.CreateDefaultBuilder(args).ConfigureServices((context, services) =>
             {
                 services.AddSingleton<ICommandHandler, PingCommandHandler>();
+                services.AddSingleton<ICommandHandler, AllSubscribersCommandHandler>();
                 services.AddSingleton<ITelegramHostedBotService, TelegramHostedBotService>();
                 var startup = new Startup();
 
