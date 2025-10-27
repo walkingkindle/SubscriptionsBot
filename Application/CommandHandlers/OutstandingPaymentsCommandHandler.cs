@@ -35,25 +35,27 @@ namespace Application.CommandHandlers
                 await botClient.SendMessage(message.Chat.Id, result.Error.Description);
             }
 
-            var response = ComponseMessage(result.Value);
+            var response = ComposeMessage(result.Value);
 
             await botClient.SendMessage(message.Chat.Id, response);
 
         }
-
-        private string ComponseMessage(SubscriberPaymentDto dto)
+        private string ComposeMessage(SubscriberPaymentDto dto)
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine("📄 *Subscriber Payment Details*");
+            sb.AppendLine("📄 Subscriber Payment Details");
             sb.AppendLine();
-            sb.AppendLine($"👤 *Name:* {dto.SubscriberName}");
-            sb.AppendLine($"💳 *Subscription:* {dto.Subscription}");
-            sb.AppendLine($"💰 *Current Balance:* {dto.CurrentBalance} RSD");
-            sb.AppendLine($"📅 *Last Payment:* {dto.LastPaymentDate:yyyy-MM-dd}");
-            sb.AppendLine($"⚠️ *Amount Due:* {dto.AmountDue} RSD");
+            sb.AppendLine($"👤 Name: {dto.SubscriberName}");
+            sb.AppendLine($"💳 Subscription: {dto.Subscription}");
+            sb.AppendLine($"💰 Balance: {dto.CurrentBalance} RSD");
+            sb.AppendLine($"📅 Last Payment: {dto.LastPaymentDate:yyyy-MM-dd}");
+            sb.AppendLine($"💸 Monthly: {dto.MonthlyPayment} RSD");
+            sb.AppendLine($"🗓️ Next Payment: {dto.NextPaymentMonth}");
+            sb.AppendLine($"⚠️ Amount Due: {dto.AmountDue} RSD");
 
             return sb.ToString();
         }
+
     }
 }

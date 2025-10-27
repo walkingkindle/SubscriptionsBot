@@ -9,6 +9,10 @@
         public required DateTime LastPaymentDate { get; set; }
         public required string Subscription { get; set; }
 
+        public required int MonthlyPayment { get; set; }
+
         public required int AmountDue { get; set; }
+
+        public required string NextPaymentMonth { get; set; }
     }
 }

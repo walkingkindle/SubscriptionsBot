@@ -28,7 +28,10 @@ namespace Application.Services
             if (subscriberCount == 0)
                 return Result.Failure<SubscriberPaymentDto>(PaymentErrors.NullSubscriber);
 
-            var amountDue = outstandingPaymentsService.CalculateDueAmount(subscriber, subscription, subscriberCount);
+            var (amountDue,monthsCoveredByBalance) = outstandingPaymentsService.CalculateDueAmountWithBalance(subscriber, subscription, subscriberCount);
+
+            var nextPaymentMonth = subscriber.LastPaymentDate.AddMonths(monthsCoveredByBalance + 1);
+
 
             SubscriberPaymentDto dto =  new SubscriberPaymentDto()
             {
@@ -36,7 +39,9 @@ namespace Application.Services
                 CurrentBalance = subscriber.BalanceInRsd,
                 LastPaymentDate = subscriber.LastPaymentDate,
                 SubscriberName = subscriber.FullName,
-                Subscription = subscription.Name
+                MonthlyPayment = subscription.PriceInRsd/subscriberCount,
+                Subscription = subscription.Name,
+                NextPaymentMonth = nextPaymentMonth.ToString("MMMM yyyy")
             };
 
             return Result.Success(dto);

@@ -4,7 +4,10 @@ namespace Domain.Interface
 {
     public interface IOutstandingPaymentsService
     {
-        public decimal CalculateDueAmount(Subscriber subscriber, Subscription subscription, int subscriberCount);
+        public (decimal amountDue, int monthsCoveredByBalance) CalculateDueAmountWithBalance(
+            Subscriber subscriber,
+            Subscription subscription,
+            int subscriberCount);
 
     }
 }
